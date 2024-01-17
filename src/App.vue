@@ -33,7 +33,7 @@
   } 
   .main-container{
     margin: 50px;
-    height: 250px;
+    min-height: 250px;
   }
   h1{
     text-align: center;
