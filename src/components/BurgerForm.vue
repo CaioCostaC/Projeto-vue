@@ -15,11 +15,21 @@
                     </select>
                 </div>
                 <div class="input-container">
-                    <label for="pao">Escolha a carde do seu bruger:</label>
+                    <label for="pao">Escolha a carne do seu bruger:</label>
                     <select name="pao" id="pao" v-model="carne">
                         <option value="">Selecione sua carne</option>
                         <option value="Integral">Maminha</option>
                     </select>
+                </div>
+                <div class="input-container">
+                    <label for="opcionais">Escolha os opcionaopcionais</label>
+                    <div class="checkbox-container">
+                        <input type="checkbox" name="opcionais" v-model="opcionais" value="salame">
+                        <span>Salame</span>
+                    </div>
+                </div>
+                <div class="inpput-container">
+                    <input type="submit" class="submit-btn" value="Criar meu Burger"> 
                 </div>
             </form>
         </div>
@@ -31,3 +41,22 @@
         name: 'BurgerForm'
     }
 </script>
+
+<style scoped>
+    #burger-form{
+        max-width:400px;
+        margin: 0 auto;
+    }
+    .input-container{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+    }
+    label{
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #222;
+        padding: 5px 10px;
+        border-left: 4px solid #fcba03;
+    }
+</style>

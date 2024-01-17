@@ -17,6 +17,7 @@
         border-top: 4px solid #111;
         color: #FCBA03;
         display: flex;
+        margin-top: 300px; /* Ação temporária para returar o bug do conteúdo na home sobrescrever o footer */
         align-items: center;
         justify-content: center;
         width: 100%;
