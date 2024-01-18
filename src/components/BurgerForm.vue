@@ -1,11 +1,11 @@
 <template>
-    <div>
-        <p>Componente de mensagem</p>
+    <div> 
+        <Message :msg="msg" v-show="msg" />
         <div>
-            <form id="burger-form">
+            <form id="burger-form" method="POST" @submit="createBurger">
                 <div class="input-container">
                     <label for="nome">Nome do cliente:</label>
-                    <input type="text" id="id" class="name" v-model="nome" placeholder="Digite o seu nome">
+                    <input type="text" id="nome" name="name" v-model="nome" placeholder="Digite o seu nome">
                 </div>
                 <div class="input-container">
                     <label for="pao">Escolha o pão:</label>
@@ -15,16 +15,16 @@
                     </select>
                 </div>
                 <div class="input-container">
-                    <label for="pao">Escolha a carne do seu bruger:</label>
-                    <select name="pao" id="pao" v-model="carne">
+                    <label for="carne">Escolha a carne do seu bruger:</label> 
+                    <select name="carne" id="carne" v-model="carne">
                         <option value="">Selecione sua carne</option>
                         <option v-for="carne in carnes" :key="carne.id" :value="carne.tipo">{{ carne.tipo }}</option>
                     </select>
                 </div>
                 <div id="opcionais-container" class="input-container">
-                    <label id="opcionais-titlle" for="opcionais">Escolha os opcionaopcionais</label>
+                    <label id="opcionais-title" for="opcionais">Escolha os opcionaopcionais</label>
                     <div v-for="opcional in opcionaisdata" :key="opcional.id" class="checkbox-container">
-                        <input type="checkbox" name="opcionais" v-model="opcionais" :value="opcional.tipo">
+                        <input type="checkbox" name="opcionais" v-model="opcionais[opcional.tipo]" :value="opcional.tipo">
                         <span>{{ opcional.tipo }}</span>
                     </div>
                 </div>
@@ -37,6 +37,8 @@
 </template>
 
 <script>
+    import Message from "./Message.vue";    
+
     export default {
         name: 'BurgerForm',
         data() {
@@ -48,11 +50,13 @@
                 pao: null, 
                 carne: null,
                 opcionais: [],
-                status: "Solicitado",
                 msg: null
             }
         },
-        methods: {
+        components:{
+            Message
+        },
+        methods: {  
             async getIngredientes() {
                 const req = await fetch("http://localhost:3000/ingredientes");
                 const data = await req.json();
@@ -60,11 +64,47 @@
                 this.paes = data.paes;
                 this.carnes = data.carnes;
                 this.opcionaisdata = data.opcionais;
+            },
+            async createBurger(e) {
+                e.preventDefault();
+
+                const data = {
+                    nome: this.nome,
+                    carne: this.carne,
+                    pao: this.pao,
+                    opcionais: Object.keys(this.opcionais),
+                    status: "Solicitado"
+                }
+
+                const dataJson = JSON.stringify(data);
+
+
+
+                const req = await fetch("http://localhost:3000/burgers", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: dataJson
+                })
+
+                const res = await req.json();
+
+                // Colocar uma msg de sistema
+                this.msg = `Pedido N° ${res.id} realizado com sucesso!`
+
+                // Limpar msg
+                setTimeout(() => this.msg = "", 3000)
+
+                // Limpar os campos
+                this.nome = "";
+                this.carne = "";
+                this.pao = "";
+                this.opcionais = [];
             }
         },
         mounted() {
             this.getIngredientes()
         }
+        
 
     }
 </script>
