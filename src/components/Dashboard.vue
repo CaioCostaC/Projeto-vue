@@ -26,7 +26,7 @@
                     <select name="status" class="status">
                         <option value="">Selecione</option>
                     </select>
-                    <button class="delet-btn">Canccelar</button>
+                    <button class="delet-btn">Cancelar</button>
                 </div>
             </div>
         </div>
